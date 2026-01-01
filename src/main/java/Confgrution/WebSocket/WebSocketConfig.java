@@ -1,35 +1,35 @@
-package Confgrution.Security.WebSocket;
+package Confgrution.WebSocket;
 
-import Componte.JwtSFilter.JwtHandshakeInterceptor;
-import JwtsManager.MainJwts;
+import Componte.WebSocket.JwtHandshakeInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class Confguer implements WebSocketMessageBrokerConfigurer {
-    private final MainJwts mainJwts;
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    public Confguer(MainJwts mainJwts) {
-        this.mainJwts = mainJwts;
+    private final JwtHandshakeInterceptor jwtHandshakeInterceptor;
+
+    @Autowired
+    public WebSocketConfig(JwtHandshakeInterceptor jwtHandshakeInterceptor) {
+        this.jwtHandshakeInterceptor = jwtHandshakeInterceptor;
     }
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("http://127.0.0.1:5500","http://localhost:5500","http://localhost:3000")
-                .addInterceptors(new JwtHandshakeInterceptor(mainJwts))
+        registry.addEndpoint("/ws")
+                .setAllowedOriginPatterns("*")
+                .addInterceptors(jwtHandshakeInterceptor)
                 .withSockJS();
-
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/topic", "/queue");
         registry.setApplicationDestinationPrefixes("/app");
-        registry.enableSimpleBroker("/topic");
-
     }
-
 }

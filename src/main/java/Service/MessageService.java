@@ -1,0 +1,22 @@
+package Service;
+
+
+import Reposteryes.MessagessRepo;
+import model.MessgessssK;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class MessageService {
+
+    private final MessagessRepo repo;
+
+    public MessageService(MessagessRepo repo) {
+        this.repo = repo;
+    }
+// يجيب رسايل قناه عن طريق ايدي بعدين سويه يجيب رسايل بس 50 حتى مينبعص
+    public List<MessgessssK> getHistory(Long channelId) {
+        return repo.findByChannel_Id(channelId);
+    }
+}

@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/v1/authroztion/access/atro")
@@ -134,5 +137,29 @@ public class Acc {
                 "status",401
         );
     }
+    @PostMapping("/get/user/from/access/")
+    public Map<String,Object> getUserFromAccess(@RequestHeader("Authorization") String accessToken){
+        if(accessToken.startsWith("Bearer ")){
+            accessToken = accessToken.substring(7);
+            String username = mainJwts.getUsernameFromAccessToken(accessToken);
+            return Map.of(
+                    "data",Map.of(
+                            "username",username
+                    ),
+                    "message","Username retrieved successfully",
+                    "status",200
+            );
+        }
+        return Map.of(
+                "data",Map.of(
+                        "username",null
+                ),
+                "message","Access Token is invalid",
+                "status",401
+        );
+    }
+    
+    
+    
 
 }

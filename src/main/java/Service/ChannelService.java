@@ -22,17 +22,18 @@ public class ChannelService {
         Channels savedChannel =  channelRepo.save(channel);
         simpMessagingTemplate.convertAndSend("/topic/channels", savedChannel);
         return  savedChannel;
+        // يعمل قناه عن طريق جدول channel اي انشاء قنوات يدوي من قاعده بيانات امن احسه ال ايدي قناه هو نفسه جدول id بي جدول قناه
     }
-    public Messages sendMessage(Messages message){
-        Channels channels = channelRepo.findById(message.getChannelId()).orElseThrow(() -> new RuntimeException("Channel not found"));
-        MessgessssK messgessssK = new MessgessssK();
-        messgessssK.setChannel(channels);
-        messgessssK.setContent(message.getContent());
-        messgessssK.setSender(message.getSender());
-        MessgessssK messgessssK1 = messagessRepo.save(messgessssK);
+    // public Messages sendMessage(Messages message){
+    //     Channels channels = channelRepo.findById(message.getChannelId()).orElseThrow(() -> new RuntimeException("Channel not found"));
+    //     MessgessssK messgessssK = new MessgessssK();
+    //     messgessssK.setChannel(channels);
+    //     messgessssK.setContent(message.getContent());
+    //     messgessssK.setSender(message.getSender());
+    //     MessgessssK messgessssK1 = messagessRepo.save(messgessssK);
 
 
-        simpMessagingTemplate.convertAndSend("/topic/channel/"+ message.getChannelId(),message);
-        return message;
-    }
+    //     simpMessagingTemplate.convertAndSend("/topic/channel." + message.getChannelId(), message);
+    //     return message;
+    // }
 }

@@ -13,8 +13,8 @@ public class Atro {
         this.channelService = channelService;
     }
 
-    @MessageMapping("/sendMessage")
-    public void handleMessage(Messages message) {
-        channelService.sendMessage(message);
-    }
+    // @MessageMapping("/sendMessage")
+    // public void handleMessage(Messages message) {
+    //     channelService.sendMessage(message);
+    // }
 }

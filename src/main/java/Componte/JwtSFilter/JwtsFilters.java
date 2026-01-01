@@ -41,7 +41,7 @@ public class JwtsFilters extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String auth = request.getHeader("Authorization");
-        System.out.println(request.getRequestURL());
+        // System.out.println(request.getRequestURL());
         if(auth != null && auth.startsWith("Bearer ")){
             String token = auth.substring(7);
             if(mainJwts.VerifyAccess(token)){

@@ -16,6 +16,12 @@ public class MessgessssK {
     private Channels channel;
     private String content;
     private String sender;
+    private String textImages;
     private LocalTime now = LocalTime.now();
+    private String imagePath;
+    @Lob // لخزن ملفات جبيره
+    private byte[] image; // ححول صوره لي byte
+    @ManyToOne
+    private User user;
 
 }

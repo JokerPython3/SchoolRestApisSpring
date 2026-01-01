@@ -11,13 +11,11 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class RefreshTokens {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     @Id
     private  Long id;
-    @Column(unique = true,nullable = true,length = 400)
+    @Column(unique = true,nullable = false,length = 400)
     private  String token;
     private Instant ex;
     @ManyToOne(fetch = FetchType.LAZY)

@@ -112,6 +112,24 @@ public class MainJwts {
         }
 
     }
+    public Long getUserIdFromRefreshToken(String token){
+        RefreshTokens refreshTokens = resposteyrs.findByToken(token).orElseThrow(() -> new RuntimeException("error"));
+        return refreshTokens.getUser().getId();
+    }
+    public Long getUserIdFromAccessToken(String token){
+        try{
+            if(!VerifyAccess(token)){
+                return null;
+            }
+           String useString = getUsernameFromAccessToken(token);
+
+                User user = userReposteryes.findByUsername(useString).orElseThrow(() -> new RuntimeException("error"));
+                return user.getId();
+        }catch(Exception e){
+            return null;
+        }
+        
+    }
 
 
 }

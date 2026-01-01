@@ -34,67 +34,21 @@ public class User {
 	private String name;
 	@Column(name= "role")
 	private String role;
-	@OneToMany(
-			mappedBy="user",cascade = CascadeType.ALL,
-			orphanRemoval = true
-	)
-	private List<RefreshTokens> refreshTokensList = new ArrayList<>();
+	@Column(name="class")
+	private Long classId;
+	@Column(name="class_a_b_c")
+	private String classABC;
+	@ManyToMany
+@JoinTable(
+    name = "user_channels",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "channel_id")
+)
+private List<Channels> channels = new ArrayList<>();
+
 	@CreationTimestamp
 	private java.util.Date timestamp;
 
-	public Long getId() {
-		return id;
-	}
 
-	public String getUsername() {
-		return username;
-	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
 }

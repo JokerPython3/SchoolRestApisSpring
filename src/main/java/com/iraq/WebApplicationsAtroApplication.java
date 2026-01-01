@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 })
 @EnableJpaRepositories("Reposteryes")
 @EntityScan("model")
-
+// صارلي سبوع شتقل عليه
 // نسيت ربطهم بي بكج وحده ونلاصت
 public class WebApplicationsAtroApplication {
 
