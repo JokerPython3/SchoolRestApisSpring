@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import JwtsManager.MainJwts;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,10 +35,12 @@ public class MessageRest {
 
     private final MessageService messageService;
     private final UserReposteryes userReposteryes;
-    public MessageRest(MessageService messageService, ChatService chatService,UserReposteryes userReposteryes) {
+    private final MainJwts mainJwts;
+    public MessageRest(MessageService messageService, ChatService chatService,UserReposteryes userReposteryes,MainJwts mainJwts) {
         this.messageService = messageService;
         this.chatService = chatService;
         this.userReposteryes =userReposteryes;
+        this.mainJwts = mainJwts;
     }
     @Autowired
     private MessagessRepo messagessRepo;
@@ -112,6 +116,102 @@ public MessgessssK uploadMessage(
 
     return savedMessage;
 }
+@PostMapping("/upload/video")
+public MessgessssK uploadVideoMessage(
+        @RequestParam("text") String text,
+        @RequestParam("sender") String sender,
+        @RequestParam("channelId") Long channelId,
+        @RequestParam(value = "video", required = false) MultipartFile videoFile,
+        @RequestHeader("Authorization") String token) { 
+    
+    DTO.Messages messages = new DTO.Messages();
+    messages.setContent(text);
+    messages.setSender(sender);
+    messages.setChannelId(channelId);
+    messages.setVideo(videoFile);           
+    MessgessssK savedMessage = chatService.sendMessage(messages,token.replace("Bearer", ""));
+    return savedMessage;
+}
+@PostMapping("/delete/{idMessage}/{channelId}/{userId}")
+public ResponseEntity<Map<String,Object>> deleteMessagees(
+        @PathVariable Long idMessage,
+        @PathVariable Long channelId,
+        @PathVariable Long userId) {    
+    boolean deleted = chatService.DeleteMessage(idMessage, channelId, userId);
+    if (deleted) {
+        return ResponseEntity.ok(
+                Map.of(
+                        "data", Map.of( 
+                                "deleted", true
+                        ),
+                        "message", "Message deleted successfully",
+                        "status", 200           
+                    ) // بطلنا نوبمرش صطناعي يبرمش حسن
+        );
+    } else {
+        return ResponseEntity.status(400).body(   
+                Map.of(
+                        "data", Map.of( 
+                                "deleted", false
+                        ),
+                        "message", "Failed to delete the message",
+                        "status", 400
+                    ));
+        
+    }}
+    @PostMapping("/edit/message/{idMessage}/{channelId}/{userId}/{content}")
+    public ResponseEntity<Map<String,Object>> editMessagees(@PathVariable Long idMessage,
+                                                          @PathVariable Long channelId,
+                                                          @PathVariable Long userId,
+                                                          @PathVariable String content) {
+        boolean edited = chatService.EditMessage(idMessage, channelId, userId, content);
+        if (edited) {
+            return ResponseEntity.ok(
+                    Map.of(
+                            "data", Map.of(
+                                    "edited", true
+                            ),
+                            "message", "Message edited successfully",
+                            "status", 200
+                    )
+            );
+        } else {
+            return ResponseEntity.status(400).body(
+                    Map.of(
+                            "data", Map.of(
+                                    "edited", false
+                            ),
+                            "message", "Failed to edit the message",
+                            "status", 400
+                    )
+            );
+        }
+    }
+    @PostMapping("/leave/{channelId}/{userId}")
+    public ResponseEntity<Map<String,Object>> leaveisAtroo(@PathVariable Long channelId,@PathVariable Long userId){
+        boolean ar = chatService.LeaveChannels(channelId, userId);
+        if(ar){
+            return  ResponseEntity.ok(
+                    Map.of(
+                            "data",Map.of(
+                                    "left",true
+                            ),
+                            "message","User left the channel successfully",
+                            "status",200
+                    )
+            );
+        } else {
+            return ResponseEntity.status(400).body(
+                    Map.of(
+                            "data",Map.of(
+                                    "left",false
+                            ),
+                            "message","Failed to leave the channel",
+                            "status",400
+                    )
+            );
+        }
+    }
 //  @PostMapping("/upload")
 //     public MessgessssK uploadMessage(
 //             @RequestParam("text") String text,
@@ -135,3 +235,5 @@ public MessgessssK uploadMessage(
 
     // }
 }
+
+// بعد شنضيف 

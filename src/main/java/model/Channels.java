@@ -30,10 +30,69 @@ public class Channels {
     private Long classiD;
     @Column(name="class_a_b_c")
     private String classABC;
+	
     
-    @ManyToMany(mappedBy = "channels", fetch = FetchType.LAZY)
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public LocalTime getNow() {
+		return now;
+	}
+
+	public void setNow(LocalTime now) {
+		this.now = now;
+	}
+
+	public Long getClassiD() {
+		return classiD;
+	}
+
+	public void setClassiD(Long classiD) {
+		this.classiD = classiD;
+	}
+
+	public String getClassABC() {
+		return classABC;
+	}
+
+	public void setClassABC(String classABC) {
+		this.classABC = classABC;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	@ManyToMany(mappedBy = "channels", fetch = FetchType.LAZY)
     @JsonIgnore
 private List<User> users;
+@OneToMany(mappedBy = "channels",fetch = FetchType.LAZY)
+private List<MessgessssK> messgessssKs;
 
     
 

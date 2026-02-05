@@ -22,6 +22,30 @@ public class RefreshTokens {
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
     //ont to one اذا تريد بس ريفرش توكن واحد للحساب
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	public Instant getEx() {
+		return ex;
+	}
+	public void setEx(Instant ex) {
+		this.ex = ex;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 
 }

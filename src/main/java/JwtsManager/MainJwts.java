@@ -130,6 +130,9 @@ public class MainJwts {
         }
         
     }
+    public boolean isBlacklisted(String token){
+        return blackAtro.contains(token);
+    }
 
 
 }

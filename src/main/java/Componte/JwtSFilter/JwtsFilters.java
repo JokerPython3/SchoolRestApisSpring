@@ -44,7 +44,8 @@ public class JwtsFilters extends OncePerRequestFilter {
         // System.out.println(request.getRequestURL());
         if(auth != null && auth.startsWith("Bearer ")){
             String token = auth.substring(7);
-            if(mainJwts.VerifyAccess(token)){
+            if(mainJwts.VerifyAccess(token) && !mainJwts.isBlacklisted(token)){
+            
                 System.out.print(mainJwts.VerifyAccess(token));
                 String username = mainJwts.getUsernameFromAccessToken(token);
                 if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){

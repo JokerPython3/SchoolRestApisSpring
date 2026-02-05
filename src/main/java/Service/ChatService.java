@@ -36,6 +36,8 @@ package Service;
 // import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
 import DTO.Messages;
 import JwtsManager.MainJwts;
 import Reposteryes.ChannelRepo;
@@ -107,6 +109,14 @@ public class ChatService {
 
             entity.setImagePath(path.toString());
             entity.setImage(file.getBytes());
+        }
+        MultipartFile videoFile = messages.getVideo();
+        if (videoFile != null && !videoFile.isEmpty()) {
+            String folder = "uploads/videos/";
+            Path path = Paths.get(folder + videoFile.getOriginalFilename());
+            Files.createDirectories(path.getParent());
+            Files.write(path, videoFile.getBytes());    
+            entity.setVideo(videoFile.getBytes());
         }
 
         messagessRepo.save(entity);
@@ -204,6 +214,9 @@ public class ChatService {
             !Objects.equals(user.getClassABC(), channel.getClassABC())) {
             return false;
         }
+        if(channel.getUsers().contains(user)){
+            return true;
+        }
 
         channelRepo.joinChannel(channelId, userId);
         return true;
@@ -213,9 +226,79 @@ public class ChatService {
     public List<Channels> getUserChannels(Long userId) {
         return channelRepo.findChannelsByUserId(userId);
     }
-       
+     @Transactional(readOnly = true)
+    public boolean DeleteMessage(Long channelId,Long userId,Long idMessage){
+        User user = userReposteryes.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));
+        MessgessssK messgessssK = messagessRepo.findById(idMessage).orElseThrow(() -> new RuntimeException("Message not found"));
+        if(joinChannel(channelId, userId)){
+            
+            List<MessgessssK> channels = channel.getMessgessssKs();
+            for(MessgessssK channelss: channels){
+                if(channelss.getId().equals(idMessage)){
+                    messagessRepo.deleteById(idMessage);
+                    break;
+                }
+
+            }
+            return true;
+
+        }else{
+            return false;
+        }
+        
+        
+        
+    }// id => id in بي اول جدول 
+    public boolean EditMessage(Long channelId,Long userId,Long idMessage,String content){
+        User user = userReposteryes.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));
+        MessgessssK messgessssK = messagessRepo.findById(idMessage).orElseThrow(() -> new RuntimeException("Message not found"));
+        if(joinChannel(channelId, userId)){ 
+            
+            List<MessgessssK> channels = channel.getMessgessssKs();
+            for(MessgessssK channelss: channels){
+                if(channelss.getId().equals(idMessage)){
+                    channelss.setContent(content);
+                    messagessRepo.save(channelss);
+                    break;
+                }
+
+            }
+            return true;
+        } else {
+            return false;
+        }}
+    public boolean LeaveChannels(Long channelId,Long userId){
+        User user = userReposteryes.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));
+        if(joinChannel(channelId, userId)){ 
+            List<User> users = channel.getUsers();
+            for(User userr: users){
+                if(userr.getId().equals(userId)){
+                    users.remove(userr);
+                    channel.setUsers(users);
+                    channelRepo.save(channel);
+                    break;
+                }
+                //بطلنا 
+
+            }
+            return true;
+        } else {
+            return false;
+        }}
+    }
     
-}
 
 // @Service
 // public class ChatService {

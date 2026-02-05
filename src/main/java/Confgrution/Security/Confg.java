@@ -37,11 +37,11 @@ public class Confg {
                                 
                                 .requestMatchers("/login/","/register/","/ws/**","/ws","/ws/info","/swagger-ui.html",
                                         "/swagger-ui/**",
-                                        "/v3/api-docs/**").permitAll()
+                                        "/v3/api-docs/**","/").permitAll()
                                 .anyRequest().authenticated());
         httpSecurity.addFilterBefore(jwtsFilters,UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
-        // primetall لانو بس بي واخد نحتاج توكن ام بقيه منحتاج توكن لنو معتمد على اول
+        
     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
