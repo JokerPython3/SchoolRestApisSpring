@@ -15,6 +15,7 @@ public interface UserReposteryes extends JpaRepository<User,Long>{
 	Optional<User>findByEmail(String email); 
 	List<User> findByClassId(Long classId);
 	List<User>  findByClassABC(String classABC);
+	List<User> findByRole(String role);
 	
 
 }

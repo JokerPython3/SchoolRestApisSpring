@@ -4,19 +4,23 @@ import DTO.Messages;
 import Reposteryes.MessagessRepo;
 import Service.ChatService;
 import io.jsonwebtoken.io.IOException;
+import model.Channels;
 import model.MessgessssK;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.time.LocalTime;
-
+import java.util.List;
 @Controller
 public class ChatControllre {
 
     private final ChatService chatService;
+   
 
     public ChatControllre(ChatService chatService) {
         this.chatService = chatService;
@@ -35,5 +39,8 @@ chatService.sendMessage(messages,token);
     }
     
 }
-}
+@PostMapping("/chat/history/{userId}")
+public List<Channels> channelsUser(@PathVariable Long userId) {
+    return chatService.getUserChannels1(userId);
+}}
 

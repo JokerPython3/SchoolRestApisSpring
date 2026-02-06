@@ -297,7 +297,11 @@ public class ChatService {
         } else {
             return false;
         }}
+            public List<Channels> getUserChannels1(Long userId) {
+        return channelRepo.findChannelsByUserId(userId);
     }
+    }
+
     
 
 // @Service

@@ -10,8 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class X {
     @GetMapping("/")
     public String requestMethodName() {
-        return "index";
+        return "loginPages/index";
         
+    }
+    @GetMapping("/home/")
+    public String homePage() {
+        return "home";
+    }
+    @GetMapping("/register/")
+    public String regiserPages() {
+        return "loginPages/register";
     }
     
     
