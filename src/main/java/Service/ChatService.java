@@ -120,6 +120,16 @@ public class ChatService {
         }
 
         messagessRepo.save(entity);
+        MultipartFile voiceFile = messages.getVoice();
+        if (voiceFile != null && !voiceFile.isEmpty()) {
+            String folder = "uploads/voices/";
+            Path path = Paths.get(folder + voiceFile.getOriginalFilename());
+            Files.createDirectories(path.getParent());
+            Files.write(path, voiceFile.getBytes());
+            entity.setVoice(voiceFile.getBytes());
+        }
+        messagessRepo.save(entity);
+        
 
         simpMessagingTemplate.convertAndSend("/topic/channel." + channel.getId(), messages);
 
@@ -340,12 +350,202 @@ public class ChatService {
         userReposteryes.save(user);
         return true;
     }
+    public List<User> getActiveUsersInChannel(Long channelId) {
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));  
+        return channel.getUsers().stream()
+                .filter(User::isActive)
+                .toList();  
+    }
+    public List<User> getAllUsersInChannel(Long channelId) {
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));
+        return channel.getUsers();}
+    public List<Channels> getChannelsByUserId(Long userId) {
+        return channelRepo.findByUsers_Id(userId); }
+    public List<MessgessssK> filterMessagesChannels(Long channelId,String keyword,Long userId){
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));
+        if(!joinChannel(channelId, userId)){
+            throw new RuntimeException("You are not a member of this channel");
+        }
+        if(keyword == null || keyword.isEmpty()){
+            return channel.getMessgessssKs();
+        }
+        if(joinChannel(channelId, userId)){
+            List<User> users = channel.getUsers();
+            for(User user: users){
+                if(user.getId().equals(userId)){
+                    return channel.getMessgessssKs().stream()
+                    .filter(Message -> Message.getContent().contains(keyword))
+                    .toList();
+                }
+            }
+
+        }else{
+            throw new RuntimeException("You are not a member of this channel");
+        }
+        return null;
+
+
+        
+    }
+    public List<MessgessssK> filterMessagesBySender(Long channelId,String sender,Long userId){
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));
+        if(!joinChannel(channelId, userId)){
+            throw new RuntimeException("You are not a member of this channel");}
+        if(sender == null || sender.isEmpty()){
+            return channel.getMessgessssKs();   }
+        if(joinChannel(channelId, userId)){
+            List<User> users = channel.getUsers();
+            for(User user: users){
+                if(user.getId().equals(userId)){
+                    return channel.getMessgessssKs().stream()
+                    .filter(Message -> Message.getSender().equals(sender))
+                    .toList();      
+                }}
+     ;
+    }else{
+    throw new RuntimeException("You are not a member of this channel");};
+
+    return null;
+
+
+
+
+
 
     
 }
-    
 
-    
+
+
+public List<MessgessssK> filterMessagesByTime(Long channelId, LocalTime from, LocalTime to, Long userId) {
+    Channels channel = channelRepo.findById(channelId)
+            .orElseThrow(() -> new RuntimeException("Channel not found"));
+    if (!joinChannel(channelId, userId)) {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    if (from == null || to == null) {
+        return channel.getMessgessssKs();
+    }
+    if (joinChannel(channelId, userId)) {
+        List<User> users = channel.getUsers();
+        for (User user : users) {
+            if (user.getId().equals(userId)) {
+                return channel.getMessgessssKs().stream()
+                        .filter(message -> message.getNow().isAfter(from) && message.getNow().isBefore(to))
+                        .toList();
+            }
+        }
+    } else {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    return null;
+}
+public List<MessgessssK> filterMessagesByContentAndSender(Long channelId, String keyword, String sender, Long userId) {
+    Channels channel = channelRepo.findById(channelId)
+            .orElseThrow(() -> new RuntimeException("Channel not found"));
+    if (!joinChannel(channelId, userId)) {
+        throw new RuntimeException("You are not a member of this channel");}
+    if ((keyword == null || keyword.isEmpty()) && (sender == null || sender.isEmpty())) {
+        return channel.getMessgessssKs();   
+    }
+    if (joinChannel(channelId, userId)) {
+        List<User> users = channel.getUsers();
+        for (User user : users) {
+            if (user.getId().equals(userId)) {
+                return channel.getMessgessssKs().stream()
+                        .filter(message -> message.getContent().contains(keyword) && message.getSender().equals(sender))
+                        .toList();      
+            }
+        }
+    } else {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    return null;
+
+
+}
+public List<MessgessssK> filterMessagesByContentAndTime(Long channelId, String keyword, LocalTime from, LocalTime to, Long userId) {
+    Channels channel = channelRepo.findById(channelId)
+            .orElseThrow(() -> new RuntimeException("Channel not found"));
+    if (!joinChannel(channelId, userId)) {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    if ((keyword == null || keyword.isEmpty()) && (from == null || to == null)) {
+        return channel.getMessgessssKs();   
+    }
+    if (joinChannel(channelId, userId)) {
+        List<User> users = channel.getUsers();
+        for (User user : users) {
+            if (user.getId().equals(userId)) {
+                return channel.getMessgessssKs().stream()
+                        .filter(message -> message.getContent().contains(keyword) && message.getNow().isAfter(from) && message.getNow().isBefore(to))
+                        .toList();      
+            }
+        }
+    } else {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    return null;
+}
+public List<MessgessssK> filterMessagesBySenderAndTime(Long channelId, String sender, LocalTime from, LocalTime to, Long userId) {
+    Channels channel = channelRepo.findById(channelId)
+            .orElseThrow(() -> new RuntimeException("Channel not found"));
+    if (!joinChannel(channelId, userId)) {
+        throw new RuntimeException("You are not a member of this channel");}
+    if ((sender == null || sender.isEmpty()) && (from == null || to == null)) {
+        return channel.getMessgessssKs();   
+    }
+    if (joinChannel(channelId, userId)) {
+        List<User> users = channel.getUsers();
+        for (User user : users) {
+            if (user.getId().equals(userId)) {
+                return channel.getMessgessssKs().stream()
+                        .filter(message -> message.getSender().equals(sender) && message.getNow().isAfter(from) && message.getNow().isBefore(to))
+                        .toList();      
+            }
+        }
+    } else {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    return null;
+}
+public List<MessgessssK> filterMessagesByContentAndSenderAndTime(Long channelId, String keyword, String sender, LocalTime from, LocalTime to, Long userId) {
+    Channels channel = channelRepo.findById(channelId)
+            .orElseThrow(() -> new RuntimeException("Channel not found"));
+    if (!joinChannel(channelId, userId)) {
+        throw new RuntimeException("You are not a member of this channel");}     
+    if ((keyword == null || keyword.isEmpty()) && (sender == null || sender.isEmpty()) && (from == null || to == null)) {
+        return channel.getMessgessssKs();}
+    if (joinChannel(channelId, userId)) {
+        List<User> users = channel.getUsers();
+        for (User user : users) {
+            if (user.getId().equals(userId)) {
+                return channel.getMessgessssKs().stream()
+                        .filter(message -> message.getContent().contains(keyword) && message.getSender().equals(sender) && message.getNow().isAfter(from) && message.getNow().isBefore(to))
+                        .toList();      
+            }
+        }
+    } else {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    return null;
+}
+public List<MessgessssK> getAllMessagesInChannel(Long channelId, Long userId) {
+    Channels channel = channelRepo.findById(channelId)
+            .orElseThrow(() -> new RuntimeException("Channel not found"));
+    if (!joinChannel(channelId, userId)) {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    return channel.getMessgessssKs();
+}
+
+
+
+}
 
 // @Service
 // public class ChatService {

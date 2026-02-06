@@ -16,6 +16,7 @@ public class Messages {
     private Long channelId;
     private MultipartFile image; 
 	private MultipartFile video;
+	private MultipartFile voice;
 	// قتياري صوره يعني
 	public String getContent() {
 		return content;
@@ -41,5 +42,18 @@ public class Messages {
 	public void setImage(MultipartFile image) {
 		this.image = image;
 	}
+	public MultipartFile getVideo() {
+		return video;
+	}
+	public void setVideo(MultipartFile video) {
+		this.video = video;
+	}
+	public MultipartFile getVoice() {
+		return voice;
+	}
+	public void setVoice(MultipartFile voice) {
+		this.voice = voice;
+	}
+    
     
 }

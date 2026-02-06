@@ -27,6 +27,8 @@ public class MessgessssK {
 	 // ححول صوره لي byte
 	@Lob
 	private byte[] video;
+	@Lob
+	private byte[] voice;
     @ManyToOne
     private User user;
 	public Long getId() {
@@ -76,6 +78,18 @@ public class MessgessssK {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public byte[] getVideo() {
+		return video;
+	}
+	public void setVideo(byte[] video) {
+		this.video = video;
+	}
+	public byte[] getVoice() {
+		return voice;
+	}
+	public void setVoice(byte[] voice) {
+		this.voice = voice;
 	}
 	
 
