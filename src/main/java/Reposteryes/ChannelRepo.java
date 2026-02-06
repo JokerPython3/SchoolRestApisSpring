@@ -37,4 +37,6 @@ public interface ChannelRepo extends JpaRepository<Channels,Long> {
     Optional<Channels>  findByClass(Long classId);
     Optional<Channels>  findByClassABC(String classABC);
     Optional<Channels>  findByUsers(List<User> users);
+    List<Channels> findByUsers_Id(Long userId);
+    List<Channels> findByChannel_ClassId_cassAbc(long classId, String classAbc);
 }

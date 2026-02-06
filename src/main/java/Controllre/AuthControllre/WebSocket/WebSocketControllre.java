@@ -22,4 +22,5 @@ public class WebSocketControllre {
         Channels createdChannel = channelService.createChannel(channel);
         return ResponseEntity.ok(createdChannel);
     }
+    
 }

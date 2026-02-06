@@ -300,7 +300,50 @@ public class ChatService {
             public List<Channels> getUserChannels1(Long userId) {
         return channelRepo.findChannelsByUserId(userId);
     }
+    public List<MessgessssK> getChannelMessages(Long channelId) {
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));
+        return channel.getMessgessssKs();
     }
+    public List<Channels> getAllChannels() {
+        return channelRepo.findAll();   
+    }
+    public List<Channels> getChannelsByClass(Long classId, String classABC) {
+        return channelRepo.findByChannel_ClassId_cassAbc(classId, classABC);
+    }
+    public Optional<Channels> getChannelByName(String name) {
+        return channelRepo.findByName(name);
+    }
+    public Optional<Channels> getChannelByClassId(Long classId) {
+        return channelRepo.findByClass(classId);
+    }
+    public Optional<Channels> getChannelByClassABC(String classABC) {
+        return channelRepo.findByClassABC(classABC);}
+    public Optional<Channels> getChannelByUsers(List<User> users) {
+        return channelRepo.findByUsers(users);}
+    public Long getNumberofUserInChannel(Long channelId){
+        Channels channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found"));
+        return (long) channel.getUsers().size();
+    }
+    public boolean isUserActive(Long userId){
+        User user = userReposteryes.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setActive(true);
+        userReposteryes.save(user);
+        return true;
+    }
+    public boolean unsetUserActive(Long userId){
+        User user = userReposteryes.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setActive(false);
+        userReposteryes.save(user);
+        return true;
+    }
+
+    
+}
+    
 
     
 

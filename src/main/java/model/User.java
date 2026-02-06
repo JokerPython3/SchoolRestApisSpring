@@ -38,6 +38,9 @@ public class User {
 	private Long classId;
 	@Column(name="class_a_b_c")
 	private String classABC;
+	@Column(name="is_active")
+	private boolean isActive;
+	
 	public Long getId() {
 		return id;
 	}

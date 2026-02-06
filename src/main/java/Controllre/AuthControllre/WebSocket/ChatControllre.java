@@ -42,5 +42,15 @@ chatService.sendMessage(messages,token);
 @PostMapping("/chat/history/{userId}")
 public List<Channels> channelsUser(@PathVariable Long userId) {
     return chatService.getUserChannels1(userId);
-}}
+}
+@MessageMapping("/active/users/{userId}")
+public void activeUsers(@PathVariable Long userId) {
+    chatService.isUserActive(userId);
+}
+@MessageMapping("/unactive/users/{userId}")
+public void unactiveUsers(@PathVariable Long userId) {
+    chatService.unsetUserActive(userId);
+}
+
+}
 
