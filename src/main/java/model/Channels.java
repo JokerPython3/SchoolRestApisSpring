@@ -91,7 +91,7 @@ public class Channels {
 	@ManyToMany(mappedBy = "channels", fetch = FetchType.LAZY)
     @JsonIgnore
 private List<User> users;
-@OneToMany(mappedBy = "channels",fetch = FetchType.LAZY)
+@OneToMany(mappedBy = "channel",fetch = FetchType.LAZY)
 private List<MessgessssK> messgessssKs;
 
     
