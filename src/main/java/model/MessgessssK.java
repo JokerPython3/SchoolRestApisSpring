@@ -91,6 +91,15 @@ public class MessgessssK {
 	public void setVoice(byte[] voice) {
 		this.voice = voice;
 	}
+	public void setContent(String content2) {
+		this.content = content2;
+		// TODO Auto-generated method stub
+		
+	}
+	public String getContent() {
+		// TODO Auto-generated method stub
+		return this.content;
+	}
 	
 
 }

@@ -94,6 +94,11 @@ private List<User> users;
 @OneToMany(mappedBy = "channel",fetch = FetchType.LAZY)
 private List<MessgessssK> messgessssKs;
 
+
+public List<MessgessssK> getMessgessssKs() {
+	return this.messgessssKs;
+}
+
     
 
 }

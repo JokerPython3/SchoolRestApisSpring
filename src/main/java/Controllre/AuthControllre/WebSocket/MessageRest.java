@@ -9,6 +9,7 @@ import model.MessgessssK;
 import model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.javapoet.LordOfTheStrings.ReturnBuilderSupport;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -211,6 +212,38 @@ public ResponseEntity<Map<String,Object>> deleteMessagees(
                     )
             );
         }
+    }
+    @GetMapping("/get/users/active/{channelid}/")
+    public ResponseEntity<Map<String, Object>> getUsersActiveInChannel(@PathVariable("channelid") Long channelId){
+    	try {
+    	List<User> users = chatService.getActiveUsersInChannel(channelId);
+    	return ResponseEntity.ok(Map.of("data",Map.of("message","successfully","users",users),"message","success"));
+    
+    	}catch (Exception e) {
+			return ResponseEntity.status(302).body(Map.of("data",Map.of("message","channel not found","List_users",List.of("users",null)),"message","error"));
+		}}
+    @GetMapping("/filter/search/keyword/{channelid}/{keyword}/{userId}")
+    public ResponseEntity<Map<String, Object>> atroIsAtro(@PathVariable("channelid") Long channelId,@PathVariable("keyword") String keyword,@PathVariable("userId") Long userId){
+    	try {
+    		List<MessgessssK> eeKs = chatService.filterMessagesChannels(channelId, keyword, userId);
+    		return ResponseEntity.ok(Map.of("data",Map.of("message","successfully","messages",eeKs),"message","success"));
+    	}catch (Exception e) {
+    		return ResponseEntity.status(302).body(Map.of("data",Map.of("message","channel not found","messages",List.of("users",null)),"message","error"));
+			
+		}
+    	
+    	
+    }
+    @GetMapping("/get/messages/channel/{channelId}/{userId}")
+    public ResponseEntity<Map<String,Object>> MessagesChannels(@PathVariable("channelId") Long channelId,@PathVariable("userID") Long userId){
+    	try {
+    	List<MessgessssK> messgessssKs = chatService.getAllMessagesInChannel(channelId, userId);
+    	return ResponseEntity.ok(Map.of("data",Map.of("message","successfully","messages",messgessssKs),"message","success"));
+    			}
+    	catch (Exception e) {
+    		return ResponseEntity.status(302).body(Map.of("data",Map.of("message","channel not found","messages",List.of("users",null)),"message","error"));
+			// TODO: handle exception
+		}
     }
 //  @PostMapping("/upload")
 //     public MessgessssK uploadMessage(

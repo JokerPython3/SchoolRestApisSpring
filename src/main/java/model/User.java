@@ -132,6 +132,15 @@ private List<Channels> channels = new ArrayList<>();
 	@CreationTimestamp
 	private java.util.Date timestamp;
 
+	public void setActive(boolean b) {
+		this.isActive = b;
+		// TODO Auto-generated method stub
+		
+	}
+	public boolean getActive() {
+		return this.isActive;
+	}
+
 
 
 }

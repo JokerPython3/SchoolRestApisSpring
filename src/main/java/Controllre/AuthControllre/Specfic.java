@@ -64,13 +64,14 @@ public class Specfic {
 
     }
     @PostMapping("/register/")
-    public Map<String,Object> RegisterAtro(@RequestParam("username") String user,@RequestParam("email") String email,@RequestParam("password") String password,@RequestParam("classId") Long idLong,@RequestParam("ClassABC") String classABC){
+    public ResponseEntity<Map<String,Object>> RegisterAtro(@RequestParam("username") String user,@RequestParam("email") String email,@RequestParam("password") String password,@RequestParam("classId") Long idLong,@RequestParam("ClassABC") String classABC){
         if(userReposteryes.findByUsername(user).isPresent()){
 
-            return Map.of("data",Map.of("message","username  found"),"status",302);
+            return ResponseEntity.status(302).body(Map.of("data",Map.of("message","username is alerady exists "),"status",302));
         }
         if(userReposteryes.findByEmail(email).isPresent()){
-            return  Map.of("data",Map.of("message","email  found"),"status",302);}
+            return ResponseEntity.status(302).body(Map.of("data",Map.of("message","email is alerdy exists"),"status",302));
+          }
         model.User use = new model.User();
         use.setUsername(user);
         use.setEmail(email);
@@ -80,7 +81,7 @@ public class Specfic {
         use.setClassId(idLong);
         use.setRole("USER");
         userReposteryes.save(use);
-        return Map.of("data",Map.of("message","Register Successfully"),"status",200);
+        return ResponseEntity.ok(Map.of("data",Map.of("message","Register Successfully"),"status",200));
     }
     // @Role("TEACHER")
     @PostMapping("/get/techaer/users/")

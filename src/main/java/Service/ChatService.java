@@ -43,6 +43,7 @@ import JwtsManager.MainJwts;
 import Reposteryes.ChannelRepo;
 import Reposteryes.MessagessRepo;
 import Reposteryes.UserReposteryes;
+import io.micrometer.observation.transport.SenderContext;
 import model.Channels;
 import model.MessgessssK;
 import model.User;
@@ -139,6 +140,7 @@ public class ChatService {
 
     return entity; 
 }
+   
 
 // public void sendMessage(Messages messages, String access)  {
 //     try{
@@ -318,9 +320,7 @@ public class ChatService {
     public List<Channels> getAllChannels() {
         return channelRepo.findAll();   
     }
-    public List<Channels> getChannelsByClass(Long classId, String classABC) {
-        return channelRepo.findByChannel_ClassId_cassAbc(classId, classABC);
-    }
+    
     public Optional<Channels> getChannelByName(String name) {
         return channelRepo.findByName(name);
     }
@@ -353,8 +353,10 @@ public class ChatService {
     public List<User> getActiveUsersInChannel(Long channelId) {
         Channels channel = channelRepo.findById(channelId)
                 .orElseThrow(() -> new RuntimeException("Channel not found"));  
+        List<User> channeList = channel.getUsers(); 
         return channel.getUsers().stream()
-                .filter(User::isActive)
+        		
+                .filter(User::getActive)
                 .toList();  
     }
     public List<User> getAllUsersInChannel(Long channelId) {
@@ -390,6 +392,7 @@ public class ChatService {
 
         
     }
+    @Transactional(readOnly = true)
     public List<MessgessssK> filterMessagesBySender(Long channelId,String sender,Long userId){
         Channels channel = channelRepo.findById(channelId)
                 .orElseThrow(() -> new RuntimeException("Channel not found"));
@@ -534,6 +537,7 @@ public List<MessgessssK> filterMessagesByContentAndSenderAndTime(Long channelId,
     }
     return null;
 }
+@Transactional(readOnly = true)
 public List<MessgessssK> getAllMessagesInChannel(Long channelId, Long userId) {
     Channels channel = channelRepo.findById(channelId)
             .orElseThrow(() -> new RuntimeException("Channel not found"));
