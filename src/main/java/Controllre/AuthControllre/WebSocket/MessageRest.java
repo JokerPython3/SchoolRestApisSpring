@@ -245,6 +245,15 @@ public ResponseEntity<Map<String,Object>> deleteMessagees(
 			// TODO: handle exception
 		}
     }
+@GetMapping("/get/channel/info/{channelId}/{userId}")
+public ResponseEntity<Map<String, Object>> getChannelInfo(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+    try {
+        Channels channel = chatService.channelInfo(channelId, userId);
+        return ResponseEntity.ok(Map.of("data", Map.of("message", "successfully", "channel", channel), "message", "success"));
+    } catch (Exception e) {
+        return ResponseEntity.status(302).body(Map.of("data", Map.of("message", "channel not found"), "message", "error"));
+    }
+}
 //  @PostMapping("/upload")
 //     public MessgessssK uploadMessage(
 //             @RequestParam("text") String text,

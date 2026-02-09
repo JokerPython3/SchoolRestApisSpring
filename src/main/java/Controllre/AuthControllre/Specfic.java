@@ -36,6 +36,7 @@ public class Specfic {
 
     @PostMapping("/login/")
     public ResponseEntity<Map<String,Object>> LoginAtro(@RequestParam("username") String user,@RequestParam("password") String password,@RequestParam("classId") Long idLong,@RequestParam("ClassABC") String classABC){
+    	System.out.println(user);
         if(userReposteryes.findByUsername(user).isEmpty()){
             Map<String,Object> n = Map.of("data",Map.of("message","username not found"),"status",302);
             return ResponseEntity.status(302).body(n);

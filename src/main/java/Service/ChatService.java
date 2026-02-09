@@ -229,6 +229,15 @@ public class ChatService {
         if(channel.getUsers().contains(user)){
             return true;
         }
+        if(!user.getChannels().contains(channel)){
+            user.getChannels().add(channel);
+            userReposteryes.save(user);
+        }
+//        String usernameString = user.getUsername();
+//        Long idLong = user.getId();
+       
+        
+        		// add user in user_channels
 
         channelRepo.joinChannel(channelId, userId);
         return true;
@@ -546,9 +555,16 @@ public List<MessgessssK> getAllMessagesInChannel(Long channelId, Long userId) {
     }
     return channel.getMessgessssKs();
 }
+public Channels channelInfo(Long channelId, Long userId) {
+    Channels channel = channelRepo.findById(channelId)
+            .orElseThrow(() -> new RuntimeException("Channel not found"));
+    if (!joinChannel(channelId, userId)) {
+        throw new RuntimeException("You are not a member of this channel");
+    }
+    return channel;
+}
 
-
-
+// alt + shift + y  to show all lines 
 }
 
 // @Service

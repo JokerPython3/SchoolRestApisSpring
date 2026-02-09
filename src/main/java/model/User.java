@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+
 import jdk.jfr.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,8 +39,8 @@ public class User {
 	private Long classId;
 	@Column(name="class_a_b_c")
 	private String classABC;
-	@Column(name="is_active")
-	private boolean isActive;
+	@Column(name="is_active",nullable = false)
+	private Boolean isActive = false;
 	
 	public Long getId() {
 		return id;
@@ -132,12 +133,12 @@ private List<Channels> channels = new ArrayList<>();
 	@CreationTimestamp
 	private java.util.Date timestamp;
 
-	public void setActive(boolean b) {
+	public void setActive(Boolean b) {
 		this.isActive = b;
 		// TODO Auto-generated method stub
 		
 	}
-	public boolean getActive() {
+	public Boolean getActive() {
 		return this.isActive;
 	}
 
