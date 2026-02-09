@@ -33,6 +33,7 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
             token = auth.get(0);
         }
 
+
         if (!StringUtils.hasText(token)) {
             URI uri = request.getURI();
             String t = UriComponentsBuilder.fromUri(uri).build().getQueryParams().getFirst("token");

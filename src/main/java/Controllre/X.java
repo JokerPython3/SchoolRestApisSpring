@@ -15,7 +15,7 @@ public class X {
     }
     @GetMapping("/home/")
     public String homePage() {
-        return "home";
+        return "HomePages/home";
     }
     @GetMapping("/register/")
     public String regiserPages() {

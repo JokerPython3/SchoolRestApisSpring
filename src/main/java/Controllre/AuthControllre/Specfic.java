@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/v1/")
+@RequestMapping("/v1/")
 public class Specfic {
 
     private final UserDateilsService userDateilsService;

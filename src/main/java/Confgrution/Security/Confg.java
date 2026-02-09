@@ -37,7 +37,7 @@ public class Confg {
                                 
                                 .requestMatchers("/login/","/register/","/ws/**","/ws","/ws/info","/swagger-ui.html",
                                         "/swagger-ui/**",
-                                        "/v3/api-docs/**","/","/get/techaer/users/").permitAll()
+                                        "/v3/api-docs/**","/","/get/techaer/users/","/v1/register/","/v1/login/").permitAll()
                                 .anyRequest().authenticated());
         httpSecurity.addFilterBefore(jwtsFilters,UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

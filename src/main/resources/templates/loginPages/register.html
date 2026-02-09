@@ -26,6 +26,10 @@
                   <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
                   <label class="form-label" for="form3Example1cg">Your Name</label>
                 </div>
+				<div data-mdb-input-init class="form-outline mb-4">
+				                  <input type="text" id="form3Example1cgg" class="form-control form-control-lg" />
+				                  <label class="form-label" for="form3Example1cgg">Your Username</label>
+				                </div>
 
                 <div data-mdb-input-init class="form-outline mb-4">
                   <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
@@ -83,42 +87,46 @@
             const classId = document.getElementById("form3Example4cgg").value
             const classABC = document.getElementById("form3Example4cggg").value
             const repeatPassword = document.getElementById("form3Example4cdg").value
+			const username = document.getElementById("form3Example1cgg").value;
             if (password !== repeatPassword) {
                 alert("Passwords do not match!");
                 return;
             }
-            fetch("/register/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    password: password,
-                    classId: classId,
-                    classABC: classABC
-                })
-            })
-            .then(response => response.json())
+			const url = new URL("http://localhost:8000/v1/register");
+
+			url.searchParams.append("username", username);
+			url.searchParams.append("email", email);
+			url.searchParams.append("password", password);
+			url.searchParams.append("classId", classId);
+			url.searchParams.append("classABC", classABC);
+
+			fetch(url.toString(), {
+			    method: "POST",
+				headers: {
+				                    "Content-Type": "application/json"
+				                },
+			})
+			.then(r => r.json())
+			
+            
             .then(data => {
                 if (data.status === 200) {
                     alert("Registration successful! Please log in.");
-                    window.location.href = "/login";
+                    window.location.href = "/login/";
                 } else {
                     alert("Registration failed: " + data.data.message);
                 }
             })
             .catch(error => {
-                console.error("Error:", error);     
+                console.error("Error:", error);
+				console.log(error);     
                 alert("An error occurred. Please try again later.");
             });
         });
         const loginLink = document.querySelector(".fw-bold");
         loginLink.addEventListener("click", () => {
-            window.location.href = "/login";
+            window.location.href = "/login/";
         });
     </script>
 </body>
 </html>
-//  terahcer نسوي حسابتهم عن طريق قاعده بيانات مانحتاج نسوي شروط مالت موعلم
