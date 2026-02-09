@@ -16,6 +16,13 @@
 ```bash 
 https://github.com/JokerPython3/SchoolRestApisSpring
 ```
+# ردت اسوي فرونت ايند بس تعب والله تكدرون تستخدمون V0.dev حتى يسويلكم فرونت ايند واشرحوله عن apis و webscoket شون يتعامل وياهن ودزوله ريسبونس واكو apis ماموجوده بيه doc هاي apis من نوع websocket تلكاوه بي مجلد Controlre/AuthControlre/WebSocket 
+# بي application.proprties اذا تستخدم قاعده بيانات غير mysql لازم تحمل driver مالته بل pom.xml وبعدما تحطه بل دبندنسي اكتب هذا بل تيرمينال
+```bash
+mvn clean install
+```
+# ولازم تحملون maven
+
 # doc apis =>
 ```json
 {
